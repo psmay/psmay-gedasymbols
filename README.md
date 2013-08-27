@@ -11,6 +11,32 @@ maintaining my gEDA stuff elsewhere for the time being.
   [gEDA]: http://www.geda-project.org/
   [gedasymbols.org]: http://www.gedasymbols.org/
 
+## Usage
+
+These instructions assume a working copy of this branch is at
+
+	/some-path/psmay-gedasymbols
+
+Substitute the actual location as necessary. Absolute paths should be used
+unless the usage is project-specific.
+
+### gschem
+
+To `~/.gEDA/gafrc`, add:
+
+	(component-library "/some-path/psmay-gedasymbols/symbols")
+
+### pcb
+
+In preferences, under Library, add
+
+	`/some-path/psmay-gedasymbols/footprints`
+
+to the Element Directories. This is a `:`-delimited list, so add a delimiter if
+necessary.
+
+(This is also the `library-newlib` setting in `~/.pcb/preferences`.)
+
 ## Terms
 
 Unless otherwise noted, all files in this repository are subject to the terms
@@ -35,4 +61,6 @@ of the MIT License (the OSI version), which reads thus:
 > LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 > OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 > SOFTWARE.
+
+
 
