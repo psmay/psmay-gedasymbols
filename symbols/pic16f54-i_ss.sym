@@ -1,0 +1,245 @@
+v 20110115 2
+P 350 175 50 175 1 0 1
+{
+T 300 200 1 8 1 1 0 6 1
+pinnumber=10
+T 350 175 1 8 0 1 0 6 1
+pinseq=1
+T 450 175 3 8 1 1 0 1 1
+pinlabel=RB3
+T 350 175 2 8 0 1 0 5 1
+pintype=io
+}
+P 350 475 50 475 1 0 1
+{
+T 300 500 1 8 1 1 0 6 1
+pinnumber=9
+T 350 475 1 8 0 1 0 6 1
+pinseq=2
+T 450 475 3 8 1 1 0 1 1
+pinlabel=RB2
+T 350 475 2 8 0 1 0 5 1
+pintype=io
+}
+P 350 775 50 775 1 0 1
+{
+T 300 800 1 8 1 1 0 6 1
+pinnumber=8
+T 350 775 1 8 0 1 0 6 1
+pinseq=3
+T 450 775 3 8 1 1 0 1 1
+pinlabel=RB1
+T 350 775 2 8 0 1 0 5 1
+pintype=io
+}
+P 350 1075 50 1075 1 0 1
+{
+T 300 1100 1 8 1 1 0 6 1
+pinnumber=7
+T 350 1075 1 8 0 1 0 6 1
+pinseq=4
+T 450 1075 3 8 1 1 0 1 1
+pinlabel=RB0
+T 350 1075 2 8 0 1 0 5 1
+pintype=io
+}
+P 350 1375 50 1375 1 0 1
+{
+T 300 1400 1 8 1 1 0 6 1
+pinnumber=6
+T 350 1375 1 8 0 1 0 6 1
+pinseq=5
+T 450 1375 3 8 1 1 0 1 1
+pinlabel=Vss
+T 350 1375 2 8 0 1 0 5 1
+pintype=pwr
+}
+P 350 1675 50 1675 1 0 1
+{
+T 300 1700 1 8 1 1 0 6 1
+pinnumber=5
+T 350 1675 1 8 0 1 0 6 1
+pinseq=6
+T 450 1675 3 8 1 1 0 1 1
+pinlabel=Vss
+T 350 1675 2 8 0 1 0 5 1
+pintype=pwr
+}
+V 315 1975 25 1 10 0 0 -1 0 0 0 0 0 0 0
+P 290 1975 50 1975 1 0 1
+{
+T 300 2000 1 8 1 1 0 6 1
+pinnumber=4
+T 290 1975 1 8 0 1 0 6 1
+pinseq=7
+T 450 1975 3 8 1 1 0 1 1
+pinlabel=\_MCLR\_
+T 290 1975 2 8 0 1 0 5 1
+pintype=in
+}
+P 350 2275 50 2275 1 0 1
+{
+T 300 2300 1 8 1 1 0 6 1
+pinnumber=3
+T 350 2275 1 8 0 1 0 6 1
+pinseq=8
+T 450 2275 3 8 1 1 0 1 1
+pinlabel=T0CKI
+T 350 2275 2 8 0 1 0 5 1
+pintype=in
+}
+P 350 2575 50 2575 1 0 1
+{
+T 300 2600 1 8 1 1 0 6 1
+pinnumber=2
+T 350 2575 1 8 0 1 0 6 1
+pinseq=9
+T 450 2575 3 8 1 1 0 1 1
+pinlabel=RA3
+T 350 2575 2 8 0 1 0 5 1
+pintype=io
+}
+P 350 2875 50 2875 1 0 1
+{
+T 300 2900 1 8 1 1 0 6 1
+pinnumber=1
+T 350 2875 1 8 0 1 0 6 1
+pinseq=10
+T 450 2875 3 8 1 1 0 1 1
+pinlabel=RA2
+T 350 2875 2 8 0 1 0 5 1
+pintype=io
+}
+P 1850 175 2150 175 1 0 1
+{
+T 1900 200 1 8 1 1 0 0 1
+pinnumber=11
+T 1850 175 1 8 0 1 0 6 1
+pinseq=11
+T 1750 175 3 8 1 1 0 7 1
+pinlabel=RB4
+T 1850 175 2 8 0 1 0 5 1
+pintype=io
+}
+P 1850 475 2150 475 1 0 1
+{
+T 1900 500 1 8 1 1 0 0 1
+pinnumber=12
+T 1850 475 1 8 0 1 0 6 1
+pinseq=12
+T 1750 475 3 8 1 1 0 7 1
+pinlabel=RB5
+T 1850 475 2 8 0 1 0 5 1
+pintype=io
+}
+P 1850 775 2150 775 1 0 1
+{
+T 1900 800 1 8 1 1 0 0 1
+pinnumber=13
+T 1850 775 1 8 0 1 0 6 1
+pinseq=13
+T 1750 775 3 8 1 1 0 7 1
+pinlabel=RB6
+T 1850 775 2 8 0 1 0 5 1
+pintype=io
+}
+P 1850 1075 2150 1075 1 0 1
+{
+T 1900 1100 1 8 1 1 0 0 1
+pinnumber=14
+T 1850 1075 1 8 0 1 0 6 1
+pinseq=14
+T 1750 1075 3 8 1 1 0 7 1
+pinlabel=RB7
+T 1850 1075 2 8 0 1 0 5 1
+pintype=io
+}
+P 1850 1375 2150 1375 1 0 1
+{
+T 1900 1400 1 8 1 1 0 0 1
+pinnumber=15
+T 1850 1375 1 8 0 1 0 6 1
+pinseq=15
+T 1750 1375 3 8 1 1 0 7 1
+pinlabel=Vdd
+T 1850 1375 2 8 0 1 0 5 1
+pintype=pwr
+}
+P 1850 1675 2150 1675 1 0 1
+{
+T 1900 1700 1 8 1 1 0 0 1
+pinnumber=16
+T 1850 1675 1 8 0 1 0 6 1
+pinseq=16
+T 1750 1675 3 8 1 1 0 7 1
+pinlabel=Vdd
+T 1850 1675 2 8 0 1 0 5 1
+pintype=pwr
+}
+P 1850 1975 2150 1975 1 0 1
+{
+T 1900 2000 1 8 1 1 0 0 1
+pinnumber=17
+T 1850 1975 1 8 0 1 0 6 1
+pinseq=17
+T 1750 1975 3 8 1 1 0 7 1
+pinlabel=OSC2
+T 1850 1975 2 8 0 1 0 5 1
+pintype=out
+}
+P 1850 2275 2150 2275 1 0 1
+{
+T 1900 2300 1 8 1 1 0 0 1
+pinnumber=18
+T 1850 2275 1 8 0 1 0 6 1
+pinseq=18
+T 1750 2275 3 8 1 1 0 7 1
+pinlabel=OSC1
+T 1850 2275 2 8 0 1 0 5 1
+pintype=clk
+}
+P 1850 2575 2150 2575 1 0 1
+{
+T 1900 2600 1 8 1 1 0 0 1
+pinnumber=19
+T 1850 2575 1 8 0 1 0 6 1
+pinseq=19
+T 1750 2575 3 8 1 1 0 7 1
+pinlabel=RA0
+T 1850 2575 2 8 0 1 0 5 1
+pintype=io
+}
+P 1850 2875 2150 2875 1 0 1
+{
+T 1900 2900 1 8 1 1 0 0 1
+pinnumber=20
+T 1850 2875 1 8 0 1 0 6 1
+pinseq=20
+T 1750 2875 3 8 1 1 0 7 1
+pinlabel=RA1
+T 1850 2875 2 8 0 1 0 5 1
+pintype=io
+}
+B 350 -25 1500 3100 3 10 0 0 -1 -1 0 -1 -1 -1 -1 -1
+T 375 3250 2 8 1 1 0 2 1
+PIC16F54-I/SS
+T 375 5250 2 8 0 0 0 2 1
+device=PIC16F54-I/SS
+T 1825 3250 2 8 1 1 0 8 1
+refdes=U?
+T 375 4650 2 8 0 0 0 2 1
+footprint=SSOP20
+T 375 5050 2 8 0 0 0 2 1
+description=PIC microcontroller
+T 375 4450 2 8 0 0 0 2 1
+numslots=0
+T 375 4850 2 8 0 0 0 2 1
+symversion=0.1
+T 375 4150 2 8 0 0 0 2 1
+author=Peter S. May
+T 375 3950 2 8 0 0 0 2 1
+copyright=Copyright © 2013 Peter S. May
+T 375 3750 2 8 0 0 0 2 1
+dist-license=MIT License (as recognized by Open Source Initiative: http://opensource.org/licenses/MIT)
+T 375 3550 2 8 0 0 0 2 1
+use-license=unlimited
