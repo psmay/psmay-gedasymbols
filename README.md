@@ -30,7 +30,7 @@ To `~/.gEDA/gafrc`, add:
 
 In preferences, under Library, add
 
-	`/some-path/psmay-gedasymbols/footprints`
+	/some-path/psmay-gedasymbols/footprints
 
 to the Element Directories. This is a `:`-delimited list, so add a delimiter if
 necessary.
@@ -42,7 +42,7 @@ necessary.
 Unless otherwise noted, all files in this repository are subject to the terms
 of the MIT License (the OSI version), which reads thus:
 
-> Copyright © 2013 Peter S. May
+> Copyright © 2013-2014 Peter S. May
 > 
 > Permission is hereby granted, free of charge, to any person obtaining a copy
 > of this software and associated documentation files (the "Software"), to deal
