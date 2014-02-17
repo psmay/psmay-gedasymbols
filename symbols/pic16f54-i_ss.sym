@@ -228,7 +228,7 @@ device=PIC16F54-I/SS
 T 1825 3250 2 8 1 1 0 8 1
 refdes=U?
 T 375 4650 2 8 0 0 0 2 1
-footprint=SSOP20
+footprint=MO150AE
 T 375 5050 2 8 0 0 0 2 1
 description=PIC microcontroller
 T 375 4450 2 8 0 0 0 2 1
