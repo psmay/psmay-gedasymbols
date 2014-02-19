@@ -37,6 +37,15 @@ necessary.
 
 (This is also the `library-newlib` setting in `~/.pcb/preferences`.)
 
+### gsch2pcb
+
+Footprints are only mapped from the `footprint` attributes in a schematic if
+the `elements-dir` has been added to the project.
+
+To the project `.gsch2pcb` file, add:
+
+	elements-dir /some-path/psmay-gedasymbols/footprints
+
 ## Terms
 
 Unless otherwise noted, all files in this repository are subject to the terms
@@ -61,6 +70,4 @@ of the MIT License (the OSI version), which reads thus:
 > LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 > OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 > SOFTWARE.
-
-
 
