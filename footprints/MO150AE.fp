@@ -1,6 +1,21 @@
 
 # MO150AE: SSOP20 with 5.3mm body width (JEDEC M0-150-AE)
 # Dimensions derived from National Semiconductor drawing (SC)MKT-MSA20 rev C
+
+# Based on output from the footprint generator
+# (http://www.gedasymbols.org/user/dj_delorie/tools/dilpad.html)
+# but slightly tweaked. Parameters used:
+# units: MM
+# BL = 7.2
+# BW = 5.3
+# CW = 7.8
+# E = .65
+# PL = 2.25
+# PLC = 6.55
+# PW = 0.43
+# SO = 0.2
+# SW = 0.6
+
 Element["" "MO150AE" "U?" "val" 17325 15535 -2000 -8000 0 100 ""]
 (
 	Pad[-16476 -11515 -9311 -11515 1692 0 1692 "1" "1" ""]
