@@ -1,6 +1,9 @@
 #!/usr/bin/perl
 # -*- perl -*-
 
+# Please refer to the copyright notice at the end of this file.
+
+
 package Dilpad;
 
 use warnings;
@@ -913,5 +916,23 @@ following keys are reserved to only have this meaning:
 Peter S. May <http://psmay.com>
 
 Based, by way of substantial refactoring, on dilpad.cgi by DJ Delorie.
+
+=head1 COPYRIGHT
+
+dilpad.pl, a footprint generator for surface-mount DIL parts in gEDA pcb
+
+Copyright (C) 2008-2014 DJ Delorie, Peter S. May
+
+This program is free software: you can redistribute it and/or modify it under
+the terms of the GNU General Public License as published by the Free Software
+Foundation, either version 2 of the License, or (at your option) any later
+version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with
+this program. If not, see <http://www.gnu.org/licenses/>.
 
 =cut
