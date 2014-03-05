@@ -3,7 +3,7 @@
 
 # Please refer to the copyright notice at the end of this file.
 
-package GEDA::PCB::Footprint::Dilpad;
+package GEDA::PCB::Footprint::Generator;
 
 use warnings;
 use strict;
@@ -92,6 +92,7 @@ sub _firstz {
 ## PCB format
 
 sub _line {
+	shift;
 	# Generate ElementLine.
 	my ($x1, $y1, $x2, $y2, $t) = @_;
 	sprintf("\tElementLine[%d %d %d %d %d]\n",
@@ -99,6 +100,7 @@ sub _line {
 }
 
 sub _arc {
+	shift;
 	# Generate ElementArc.
 	my ($x, $y, $r, $sa, $da, $t) = @_;
 	sprintf("\tElementArc[%d %d %d %d %d %d %d]\n",
@@ -106,6 +108,7 @@ sub _arc {
 }
 
 sub _pad {
+	shift;
 	# Generate Pad.
 	my ($a0, $a1, $a2, $a3, $a4, $a5, $a6, $lname, $rname, $flags) = @_;
 	sprintf("\tPad[%d %d %d %d %d %d %d \"%s\" \"%s\" \"%s\"]\n",
@@ -113,6 +116,7 @@ sub _pad {
 }
 
 sub _box {
+	my $self = shift;
 	# Generate a rectangle.
 	my ($x1, $y1, $x2, $y2, $t) = @_;
 	if (@_ == 3) {
@@ -120,13 +124,14 @@ sub _box {
 		my ($w, $h, $t_) = @_;
 		($x1, $y1, $x2, $y2, $t) = (-$w/2, -$h/2, $w/2, $h/2, $t_);
 	}
-	_line($x1, $y1, $x1, $y2, $t) .
-	_line($x1, $y1, $x2, $y1, $t) .
-	_line($x2, $y2, $x1, $y2, $t) .
-	_line($x2, $y2, $x2, $y1, $t);
+	$self->_line($x1, $y1, $x1, $y2, $t) .
+	$self->_line($x1, $y1, $x2, $y1, $t) .
+	$self->_line($x2, $y2, $x1, $y2, $t) .
+	$self->_line($x2, $y2, $x2, $y1, $t);
 }
 
 sub _with_silk_around_footprint {
+	my $self = shift;
 	my %q = @_;
 
 	# Not enough space for silk in the middle, put it around the whole
@@ -135,14 +140,15 @@ sub _with_silk_around_footprint {
 	my $r = max($q{soc}, ($q{bl} - ($q{e}*($q{np2}-1)+$q{pw}))/2);
 
 	return
-		_line(-$w+$r, -$q{l}, $w, -$q{l}, $q{t}) .
-		_line(-$w, $q{l}, $w, $q{l}, $q{t}) .
-		_line( $w, -$q{l}, $w, $q{l}, $q{t}) .
-		_line(-$w, $q{l}, -$w, -$q{l}+$r, $q{t}) .
-		_arc(-$w+$r, -$q{l}+$r, $r, 270, 90, $q{t});
+		$self->_line(-$w+$r, -$q{l}, $w, -$q{l}, $q{t}) .
+		$self->_line(-$w, $q{l}, $w, $q{l}, $q{t}) .
+		$self->_line( $w, -$q{l}, $w, $q{l}, $q{t}) .
+		$self->_line(-$w, $q{l}, -$w, -$q{l}+$r, $q{t}) .
+		$self->_arc(-$w+$r, -$q{l}+$r, $r, 270, 90, $q{t});
 }
 
 sub _with_silk_between_pads {
+	my $self = shift;
 	my %q = @_;
 
 	# Enough space to put the silk between the pads.
@@ -156,14 +162,14 @@ sub _with_silk_between_pads {
 	$r = max($r, $q{sw}/2 + $q{so}/2);
 
 	return
-		_arc (0, -$q{l}, $r, 0, 180, $q{t}) .
+		$self->_arc (0, -$q{l}, $r, 0, 180, $q{t}) .
 
-		_line(-$w1, -$q{l}, -$r, -$q{l}, $q{t}) .
-		_line($r, -$q{l}, $w1, -$q{l}, $q{t}) .
-		_line(-$w1, $q{l}, $w1, $q{l}, $q{t}) .
+		$self->_line(-$w1, -$q{l}, -$r, -$q{l}, $q{t}) .
+		$self->_line($r, -$q{l}, $w1, -$q{l}, $q{t}) .
+		$self->_line(-$w1, $q{l}, $w1, $q{l}, $q{t}) .
 
-		_line( $w2, -$q{l}, $w2, $q{l}, $q{t}) .
-		_line(-$w2, $q{l}, -$w2, -$q{l}, $q{t});
+		$self->_line( $w2, -$q{l}, $w2, $q{l}, $q{t}) .
+		$self->_line(-$w2, $q{l}, -$w2, -$q{l}, $q{t});
 }
 
 sub _seq_pin_location {
@@ -210,18 +216,19 @@ sub _seq_pin_location {
 }
 
 sub _package_outline {
+	my $self = shift;
 	my %q = @_;
 
 	my @output;
 
 	if (defined($q{bw}) && defined($q{bl})) {
-		push @output, _box($q{bw}, $q{bl}, 1);
+		push @output, $self->_box($q{bw}, $q{bl}, 1);
 	}
 
 	if (defined($q{cw}) && defined($q{lw}) && defined($q{bw})) {
 		for my $p (0 .. $q{np2} - 1) {
-			push @output, _box(-$q{cw}/2, $q{pad1y}-$q{lw}/2+$q{p}*$q{e}, -$q{bw}/2, $q{pad1y}+$q{lw}/2+$q{p}*$q{e}, 100);
-			push @output, _box($q{cw}/2, $q{pad1y}-$q{lw}/2+$q{p}*$q{e}, $q{bw}/2, $q{pad1y}+$q{lw}/2+$q{p}*$q{e}, 100);
+			push @output, $self->_box(-$q{cw}/2, $q{pad1y}-$q{lw}/2+$q{p}*$q{e}, -$q{bw}/2, $q{pad1y}+$q{lw}/2+$q{p}*$q{e}, 100);
+			push @output, $self->_box($q{cw}/2, $q{pad1y}-$q{lw}/2+$q{p}*$q{e}, $q{bw}/2, $q{pad1y}+$q{lw}/2+$q{p}*$q{e}, 100);
 		}
 	}
 
@@ -229,6 +236,7 @@ sub _package_outline {
 }
 
 sub _element_head {
+	shift;
 	my ($s0, $description, $refdes, $val, $n1, $n2, $n3, $n4, $n5, $n6, $s1) = @_;
 	
 	return sprintf('Element["%s" "%s" "%s" "%s" %d %d %d %d %d %d "%s"]' . "\n(\n",
@@ -246,7 +254,7 @@ sub _element {
 	#push @output, get_comments();
 
 
-	push @output, _element_head("", $q{description}, $q{refdes}, $q{id}, 0, 0, 0, 0, 0, 100, "");
+	push @output, $self->_element_head("", $q{description}, $q{refdes}, $q{id}, 0, 0, 0, 0, 0, 100, "");
 
 	# $ix and $iy are 0 for the upper left pad.
 	my ($ix, $iy);
@@ -262,21 +270,21 @@ sub _element {
 		my $pinname = $q{pinnames}{$pad};
 		my $pinnumber = $q{pinnumbers}{$pad};
 
-		push @output, _pad($x*($q{px}+$q{dx}), $y+$q{dy}, $x*($q{px}-$q{dx}),
+		push @output, $self->_pad($x*($q{px}+$q{dx}), $y+$q{dy}, $x*($q{px}-$q{dx}),
 			$y-$q{dy}, $q{pt}, $q{c}*2, $q{m}*2 + $q{pt}, $pinname, $pinnumber, "square");
 	}
 
 	if ($q{pol}) {
-		push @output, _package_outline(pad1y => $pad1y, %q);
+		push @output, $self->_package_outline(pad1y => $pad1y, %q);
 	}
 
 	if ($q{g} < 3 * $q{so} + 2 * $q{sw} || $q{bw} == 0 || $q{bl} == 0) {
-		push @output, _with_silk_around_footprint(%q);
+		push @output, $self->_with_silk_around_footprint(%q);
 	} else {
-		push @output, _with_silk_between_pads(%q);
+		push @output, $self->_with_silk_between_pads(%q);
 	}
 
-	push @output, _element_tail();
+	push @output, $self->_element_tail();
 
 	return join('', @output);
 }
@@ -550,25 +558,45 @@ sub _fc(&@) {
 	_fill_in_calculation($mag, $fn, @_);
 }
 
+sub _parse_magnitude {
+	my $value = shift;
+	my $default_unit = shift;
+
+	for($value) {
+		$_ //= '';
+		$_ = lc $_;
+		s/\s+//;
+		if (/^\s*([\d\.]+)\s*(?:(mil|mm|%|x)\s*)?$/i) {
+			my $num = $1;
+			my $unitname = $2 // '';
+			my $unit = $default_unit;
+			$unit = _get_inline_unit($unitname) if $unitname ne '';
+			return ($num * $unit->{rate}, $unit->{relative});
+		} else {
+			return ();
+		}
+	}
+}
+
+sub _get_magnitude_variable_names {
+	return (qw/bl bw c cw e g ll lw m pg pl plc ple pw pwe pxl so soc sw/);
+}
+
 sub _parse_magnitudes_from_input {
 	my $in = shift;
+	my @names = @_;
+
 	my $mag = {};
 
 	my $default_unit = _get_default_unit($in->{units});
 
-	for my $v (qw/bl bw c cw e g ll lw m pg pl plc ple pw pwe pxl so soc sw/) {
-		my $upv = uc $v;
-		$in->{$v} //= '';
-		$in->{$v} =~ s/\s+//;
-		$in->{$v} =~ lc $in->{$v};
-		if ($in->{$v} =~ /^\s*([\d\.]+)\s*(?:(mil|mm|%|x)\s*)?$/i) {
-			my $num = $1;
-			my $u = $2 // '';
-			my $unit = $default_unit;
-			$unit = _get_inline_unit($u) if $u ne '';
-			$mag->{V}{$v} = $num * $unit->{rate};
-			$mag->{R}{$v} = $unit->{relative};
-		} else {
+	for my $v (@names) {
+		my($mv, $mr) = _parse_magnitude($in->{$v}, $default_unit);
+		if(defined $mv) {
+			$mag->{V}{$v} = $mv;
+			$mag->{R}{$v} = $mr;
+		}
+		else {
 			delete $mag->{V}{$v};
 		}
 	}
@@ -576,6 +604,7 @@ sub _parse_magnitudes_from_input {
 }
 
 sub _fill_in_missing_magnitudes {
+	my $self = shift;
 	my $mag = shift;
 
 	FILL_IN_BLANKS: {
@@ -626,9 +655,16 @@ sub _parse_parameters {
 	my $in = { @_ };
 
 	# load input parameters
-	my $mag = _parse_magnitudes_from_input($in);
+	my $mag = _parse_magnitudes_from_input($in, $self->_get_magnitude_variable_names);
 	# fill in missing parameters
-	_fill_in_missing_magnitudes($mag);
+	$self->_fill_in_missing_magnitudes($mag);
+	$self->_fill_in_additional_parameters($mag, $in);
+}
+
+sub _fill_in_additional_parameters {
+	my $self = shift;
+	my $mag = shift;
+	my $in = shift;
 
 	# variables based on $in
 	my $seq = $in->{seq};
@@ -707,12 +743,14 @@ sub new {
 	my $proto = shift;
 	my $class = ref($proto) || $proto;
 	my $self = bless {}, $class;
-
-	$self->_parse_parameters(@_);
-
+	$self->_initialize(@_);
 	return $self;
 }
 
+sub _initialize {
+	my $self = shift;
+	return $self->_parse_parameters(@_);
+}
 
 sub DESTROY {
 	my $self = shift;
@@ -727,48 +765,17 @@ __END__
 
 =head1 NAME
 
-GEDA::PCB::Footprint::Dilpad - a footprint generator for surface-mount DIL parts in gEDA pcb
+GEDA::PCB::Footprint::Generator - a base footprint generator gEDA pcb
 
-=head1 SYNOPSIS
+=head1 WARNING
 
-	use GEDA::PCB::Footprint::Dilpad;
-	
-	my $gen = new GEDA::PCB::Footprint::Dilpad (
-		key1 => value1,
-		...
-		keyN => valueN
-	);
-	# Optionally, supply filehandle to any of these.
-	# If omitted, the currently selected handle is used.
-	$gen->write_footprint_to_handle($fp_fh);
-	$gen->write_eps_to_handle($eps_fh); # binmode handle first
-	$gen->write_png_to_handle($png_fh); # binmode handle first
-
-	# Example: One possibility for SSOP-28
-	my $gen = new GEDA::PCB::Footprint::Dilpad (
-		id => 'SSOP28',
-		description => 'SSOP-28 (JEDEC MP-150-AH)',
-		units => 'mm',
-		seq => 'A',
-		c => 0.127,
-		m => 0.3,
-		so => 0.2,
-		sw => 0.6,
-		bw => 5.3,
-		cw => 7.8,
-		e => 0.65,
-		pl => 2.25,
-		plc => 6.55,
-		pw => 0.43,
-		np => 28,
-		bl => 10.2,
-	);
+This documentation has not been updated for the new structure.
 
 =head1 METHODS
 
 =over 4
 
-=item $gen = GEDA::PCB::Footprint::Dilpad->new(I<%parameters>)
+=item $gen = GEDA::PCB::Footprint::Generator->new(I<%parameters>)
 
 Creates a new generator object using the given parameters (see L<"PARAMETERS">);
 
@@ -933,7 +940,7 @@ Based, by way of substantial refactoring, on dilpad.cgi by DJ Delorie.
 
 =head1 COPYRIGHT
 
-GEDA::PCB::Footprint::Dilpad, a footprint generator for surface-mount DIL parts in gEDA pcb
+GEDA::PCB::Footprint::Generator, a footprint generator for surface-mount DIL parts in gEDA pcb
 
 Copyright (C) 2008-2014 DJ Delorie, Peter S. May
 
