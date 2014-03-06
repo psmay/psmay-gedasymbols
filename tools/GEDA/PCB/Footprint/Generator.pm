@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-# -*- perl -*-
 
 # Please refer to the copyright notice at the end of this file.
 
@@ -12,7 +10,6 @@ use 5.010;
 
 use File::Temp 'tempdir';
 use File::Spec;
-use List::Util qw/min max first/;
 use Image::Magick;
 
 my $PCB = `which pcb`;
@@ -70,7 +67,6 @@ sub _run_pcb_fp_to_eps {
 }
 
 
-
 ## Utility
 
 sub _round {
@@ -80,12 +76,6 @@ sub _round {
 	use POSIX 'floor';
 	return floor($value + 0.5);
 }
-
-sub _firstz {
-	# Returns first true argument, or 0.
-	return +(first { $_ } @_) or 0;
-}
-
 
 
 
@@ -130,111 +120,6 @@ sub _box {
 	$self->_line($x2, $y2, $x2, $y1, $t);
 }
 
-sub _with_silk_around_footprint {
-	my $self = shift;
-	my %q = @_;
-
-	# Not enough space for silk in the middle, put it around the whole
-	# footprint.
-	my $w = max($q{bw}, $q{cw}+$q{s}, $q{pxl}+$q{s})/2;
-	my $r = max($q{soc}, ($q{bl} - ($q{e}*($q{np2}-1)+$q{pw}))/2);
-
-	return
-		$self->_line(-$w+$r, -$q{l}, $w, -$q{l}, $q{t}) .
-		$self->_line(-$w, $q{l}, $w, $q{l}, $q{t}) .
-		$self->_line( $w, -$q{l}, $w, $q{l}, $q{t}) .
-		$self->_line(-$w, $q{l}, -$w, -$q{l}+$r, $q{t}) .
-		$self->_arc(-$w+$r, -$q{l}+$r, $r, 270, 90, $q{t});
-}
-
-sub _with_silk_between_pads {
-	my $self = shift;
-	my %q = @_;
-
-	# Enough space to put the silk between the pads.
-	my $w1 = _firstz($q{bw}, $q{cw}+$q{s}, $q{pxl}+$q{s})/2;
-	my $w2 = min($q{bw}/2, $q{g}/2-$q{soc});
-
-	my $r;
-	$r = $q{g}/6;
-	$r = min($r, $q{l}-$q{s});
-	$r = min($r, $w2);
-	$r = max($r, $q{sw}/2 + $q{so}/2);
-
-	return
-		$self->_arc (0, -$q{l}, $r, 0, 180, $q{t}) .
-
-		$self->_line(-$w1, -$q{l}, -$r, -$q{l}, $q{t}) .
-		$self->_line($r, -$q{l}, $w1, -$q{l}, $q{t}) .
-		$self->_line(-$w1, $q{l}, $w1, $q{l}, $q{t}) .
-
-		$self->_line( $w2, -$q{l}, $w2, $q{l}, $q{t}) .
-		$self->_line(-$w2, $q{l}, -$w2, -$q{l}, $q{t});
-}
-
-sub _seq_pin_location {
-	my $pad_number = shift;
-	my $pad_count_half = shift;
-	my $seq = uc(shift // '');
-	if($seq eq '') {
-		$seq = "A";
-		carp "No seq provided; reverting to $seq";
-	}
-	if($seq !~ /^[A-F]$/) {
-		croak "Unknown sequence type $seq";
-	}
-
-	my $pad_count = $pad_count_half * 2;
-
-	my $left = ($pad_number <= $pad_count_half);
-
-	my ($ix, $iy);
-
-	if ($seq =~ /A/i) {
-		$ix = $left ? 0 : 1;
-		$iy = $left ? $pad_number-1 : $pad_count-$pad_number;
-	} elsif ($seq =~ /B/i) {
-		$ix = $left ? 0 : 1;
-		$iy = $left ? $pad_number-1 : $pad_number-$pad_count_half-1;
-	} elsif ($seq =~ /C/i) {
-		$ix = ($pad_number-1) % 2;
-		$iy = int(($pad_number-1) / 2);
-	} elsif ($seq =~ /D/i) {
-		$ix = $left ? 1 : 0;
-		$iy = $left ? $pad_number-1 : $pad_count-$pad_number;
-	} elsif ($seq =~ /E/i) {
-		$ix = $left ? 1 : 0;
-		$iy = $left ? $pad_number-1 : $pad_number-$pad_count_half-1;
-	} elsif ($seq =~ /F/i) {
-		$ix = 1 - ($pad_number-1) % 2;
-		$iy = int(($pad_number-1) / 2);
-	} else {
-		croak "Invalid sequence type $seq";
-	}
-
-	return ($ix, $iy);
-}
-
-sub _package_outline {
-	my $self = shift;
-	my %q = @_;
-
-	my @output;
-
-	if (defined($q{bw}) && defined($q{bl})) {
-		push @output, $self->_box($q{bw}, $q{bl}, 1);
-	}
-
-	if (defined($q{cw}) && defined($q{lw}) && defined($q{bw})) {
-		for my $p (0 .. $q{np2} - 1) {
-			push @output, $self->_box(-$q{cw}/2, $q{pad1y}-$q{lw}/2+$q{p}*$q{e}, -$q{bw}/2, $q{pad1y}+$q{lw}/2+$q{p}*$q{e}, 100);
-			push @output, $self->_box($q{cw}/2, $q{pad1y}-$q{lw}/2+$q{p}*$q{e}, $q{bw}/2, $q{pad1y}+$q{lw}/2+$q{p}*$q{e}, 100);
-		}
-	}
-
-	return join('', @output);
-}
-
 sub _element_head {
 	shift;
 	my ($s0, $description, $refdes, $val, $n1, $n2, $n3, $n4, $n5, $n6, $s1) = @_;
@@ -245,56 +130,10 @@ sub _element_head {
 
 sub _element_tail { ")\n" }
 
-sub _element {
-	my $self = shift;
-	my %q = @_;
-
-	my @output = ();
-
-	#push @output, get_comments();
-
-
-	push @output, $self->_element_head("", $q{description}, $q{refdes}, $q{id}, 0, 0, 0, 0, 0, 100, "");
-
-	# $ix and $iy are 0 for the upper left pad.
-	my ($ix, $iy);
-
-	my $pad1y = - ($q{np2}-1) * $q{e} / 2;
-
-	for my $pad (1..$q{np}) {
-		($ix, $iy) = _seq_pin_location($pad, $q{np2}, $q{seq});
-
-		my $x = $ix ? 1 : -1;
-		my $y = $pad1y + $q{e} * $iy;
-
-		my $pinname = $q{pinnames}{$pad};
-		my $pinnumber = $q{pinnumbers}{$pad};
-
-		push @output, $self->_pad($x*($q{px}+$q{dx}), $y+$q{dy}, $x*($q{px}-$q{dx}),
-			$y-$q{dy}, $q{pt}, $q{c}*2, $q{m}*2 + $q{pt}, $pinname, $pinnumber, "square");
-	}
-
-	if ($q{pol}) {
-		push @output, $self->_package_outline(pad1y => $pad1y, %q);
-	}
-
-	if ($q{g} < 3 * $q{so} + 2 * $q{sw} || $q{bw} == 0 || $q{bl} == 0) {
-		push @output, $self->_with_silk_around_footprint(%q);
-	} else {
-		push @output, $self->_with_silk_between_pads(%q);
-	}
-
-	push @output, $self->_element_tail();
-
-	return join('', @output);
-}
-
 sub render_element {
 	my $self = shift;
 	print $self->_element(@_);
 }
-
-
 
 
 ## PNG generation
@@ -387,7 +226,6 @@ sub write_footprint_to_handle {
 	return _cat_to_handle($self->_as_footprint_temp(@_), $outhandle);
 }
 
-
 sub _write_eps_at {
 	my $self = shift;
 	my $filename = shift;
@@ -410,8 +248,6 @@ sub write_eps_to_handle {
 	my $outhandle = shift;
 	return _cat_to_handle($self->_as_eps_temp(@_), $outhandle);
 }
-
-
 
 sub _write_png_at {
 	my $self = shift;
@@ -502,8 +338,6 @@ sub _cat_to_handle {
 }
 
 
-
-
 ## Computation of parameters
 
 # In a mag table, if d is a ratio, calculate it in terms of s.
@@ -518,11 +352,6 @@ sub _fill_in_ratio {
 		return 1;
 	}
 	return 0;
-}
-
-sub _fp(@) {
-	my $mag = shift;
-	_fill_in_ratio($mag, @_);
 }
 
 # In a mag table, if the destination is not already defined, calculate it in
@@ -552,12 +381,6 @@ sub _fill_in_calculation {
 	return 1;
 }
 
-sub _fc(&@) {
-	my $fn = shift;
-	my $mag = shift;
-	_fill_in_calculation($mag, $fn, @_);
-}
-
 sub _parse_magnitude {
 	my $value = shift;
 	my $default_unit = shift;
@@ -576,10 +399,6 @@ sub _parse_magnitude {
 			return ();
 		}
 	}
-}
-
-sub _get_magnitude_variable_names {
-	return (qw/bl bw c cw e g ll lw m pg pl plc ple pw pwe pxl so soc sw/);
 }
 
 sub _parse_magnitudes_from_input {
@@ -603,53 +422,6 @@ sub _parse_magnitudes_from_input {
 	return $mag;
 }
 
-sub _fill_in_missing_magnitudes {
-	my $self = shift;
-	my $mag = shift;
-
-	FILL_IN_BLANKS: {
-		my $again = 0;
-
-		$again |= _fp $mag, 'g', 'bw';
-		$again |= _fp $mag, 'pwe', 'lw';
-		$again |= _fp $mag, 'ple', 'll';
-
-		$again |= _fc { my ($bw, $ll) = @_; $bw + 2 + $ll } $mag, qw/cw bw ll/;
-		$again |= _fc { my ($bw, $ll) = @_; $bw + 2 * $ll } $mag, qw/cw bw ll/;
-		$again |= _fc { my ($pxl, $ll) = @_; $pxl - 2 * $ll } $mag, qw/cw pxl ll/;
-		$again |= _fc { my ($pxl, $pl) = @_; $pxl - 2 * $pl } $mag, qw/g pxl pl/;
-		$again |= _fc { my ($plc, $pl) = @_; $plc - $pl } $mag, qw/g plc pl/;
-		$again |= _fc { my ($plc, $pl) = @_; $plc + $pl } $mag, qw/pxl plc pl/;
-		$again |= _fc { my ($g, $pl) = @_; $g + 2 * $pl } $mag, qw/pxl g pl/;
-		$again |= _fc { my ($plc, $pl) = @_; $plc + $pl } $mag, qw/pxl plc pl/;
-		$again |= _fc { my ($cw, $ple) = @_; $cw + 2 * $ple } $mag, qw/pxl cw ple/;
-		$again |= _fc { my ($pxl, $cw) = @_; ($pxl - $cw)/2 } $mag, qw/ple pxl cw/;
-
-		$again |= _fc { my ($pw, $pwe) = @_; $pw - 2 * $pwe } $mag, qw/lw pw pwe/;
-		$again |= _fc { my ($pw, $lw) = @_; ($pw - $lw)/2 } $mag, qw/pwe pw lw/;
-		$again |= _fc { my ($lw, $pwe) = @_; $lw + 2 * $pwe } $mag, qw/pw lw pwe/;
-		$again |= _fc { my ($e, $pg) = @_; $e - $pg } $mag, qw/pw e pg/;
-		$again |= _fc { my ($e, $pw) = @_; $e - $pw } $mag, qw/pg e pw/;
-		$again |= _fc { my ($pw, $pg) = @_; $pw + $pg } $mag, qw/e pw pg/;
-
-		$again |= _fc { my ($pxl, $pl) = @_; $pxl - $pl } $mag, qw/plc pxl pl/;
-		$again |= _fc { my ($g, $pl) = @_; $g + $pl } $mag, qw/plc g pl/;
-		$again |= _fc { my ($cw, $ple, $pl) = @_; $cw + 2 * $ple - $pl } $mag, qw/plc cw ple pl/;
-		$again |= _fc { my ($pxl, $g) = @_; ($pxl - $g)/2 } $mag, qw/pl pxl g/;
-		$again |= _fc { my ($plc, $g) = @_; $plc - $g } $mag, qw/pl plc g/;
-		$again |= _fc { my ($cl, $ple, $g) = @_; ($cl + $ple*2 - $g)/2 } $mag, qw/pl cl ple g/;
-
-		$again |= _fc { my ($soc, $sw) = @_; $soc - $sw/2 } $mag, qw/so soc sw/;
-		$again |= _fc { my ($so, $sw) = @_; $so + $sw/2 } $mag, qw/soc so sw/;
-		$again |= _fc { my ($soc, $so) = @_; ($soc - $so)*2 } $mag, qw/sw soc so/;
-
-		redo FILL_IN_BLANKS if $again;
-	}
-
-	_fp $mag, 'c', 'pg';
-	_fp $mag, 'm', 'pg';
-}
-
 sub _parse_parameters {
 	my $self = shift;
 	my $in = { @_ };
@@ -659,76 +431,6 @@ sub _parse_parameters {
 	# fill in missing parameters
 	$self->_fill_in_missing_magnitudes($mag);
 	$self->_fill_in_additional_parameters($mag, $in);
-}
-
-sub _fill_in_additional_parameters {
-	my $self = shift;
-	my $mag = shift;
-	my $in = shift;
-
-	# variables based on $in
-	my $seq = $in->{seq};
-	my $pol = $in->{pol};
-
-	my $np = $in->{np};
-	croak "Number of pins (np) is not defined" unless defined $np;
-	my $np2 = $np/2;
-
-	my %pinnames = ();
-	my %pinnumbers = ();
-	for(1 .. $np) {
-		$pinnames{$_} = $in->{"name$_"} // $_;
-		$pinnumbers{$_} = $in->{$_} // $_;
-	}
-
-	my $description = $in->{description} // "dil-$np";
-	my $refdes = $in->{refdes} // "U?";
-	my $id = $in->{id};
-
-	# variables based on $mag
-	my $mv = $mag->{V};
-
-
-	my $dx = 0;
-	my $dy = 0;
-	my $px = $mv->{plc} / 2;
-	my $pt;
-
-	if ($mv->{pl} > $mv->{pw}) {
-		$dx = ($mv->{pl} - $mv->{pw}) / 2;
-		$pt = $mv->{pw};
-	} else {
-		$dy = ($mv->{pw} - $mv->{pl}) / 2;
-		$pt = $mv->{pl};
-	}
-
-	my $s = $mv->{soc} * 2;
-	my $t = $mv->{sw};
-	my $l = max($mv->{bl}, $mv->{e}*($np2-1)+$mv->{pw}+$s)/2;
-
-	# footprint generation parameters
-	$self->{generation_parameters} = {
-		description => $description,
-		refdes => $refdes,
-		id => $id,
-		pinnames => \%pinnames,
-		pinnumbers => \%pinnumbers,
-		np2 => $np2,
-		np => $np,
-		seq => $seq,
-		pol => $pol,
-		px => $px,
-		dx => $dx,
-		dy => $dy,
-		pt => $pt,
-		l => $l,
-		t => $t,
-		s => $s,
-	};
-
-	for(qw/bl bw c cw e g lw m pw pxl soc so sw/) {
-		$self->{generation_parameters}{$_} = $mv->{$_};
-	}
 }
 
 sub _footprint_parameters {

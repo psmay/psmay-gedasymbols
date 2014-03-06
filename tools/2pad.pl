@@ -7,13 +7,13 @@ use strict;
 use Carp;
 use 5.010;
 
-use GEDA::PCB::Footprint::Dilpad;
+use GEDA::PCB::Footprint::Twopad;
 
 my %params = ();
 my @comments = ();
 
 push @comments, "\n";
-push @comments, "# Generated footprint using dilpad.pl\n";
+push @comments, "# Generated footprint using 2pad.pl\n";
 
 for(@ARGV) {
 	if(/^\s*(.*?)\s*=(.*)$/) {
@@ -31,7 +31,7 @@ for(@ARGV) {
 }
 
 {
-	my $gen = new GEDA::PCB::Footprint::Dilpad %params;
+	my $gen = new GEDA::PCB::Footprint::Twopad %params;
 	$params{format} //= 'pcb';
 	
 	given ($params{format}) {
@@ -55,18 +55,16 @@ __END__
 
 =head1 NAME
 
-dilpad.pl - a modest extension of DJ Delorie's DIL footprint generator
+2pad.pl - a modest extension of DJ Delorie's 2-pad footprint generator
 
 =head1 SYNOPSIS
 
-	perl dilpad.pl key1=value1 ... keyN=valueN > output.fp
+	perl 2pad.pl key1=value1 ... keyN=valueN > output.fp
 
-	# Example: One possibility for SSOP-28
-	perl dilpad.pl \
-		id=SSOP28 "description=SSOP-28 (JEDEC MP-150-AH)" \
-		units=mm seq=A c=0.127 m=0.3 so=0.2 sw=0.6 \
-		bw=5.3 cw=7.8 e=0.65 pl=2.25 plc=6.55 pw=0.43 \
-		np=28 bl=10.2
+	# Example
+	perl 2pad.pl \
+		id=TWOPIN_EXAMPLE "description=Example two-pin device" \
+		units=mm c=0.127 m=0.3 plc=1.9 pt=0.3 pw=1.6 so=0.2 sw=0.2
 
 =head1 PARAMETERS
 
@@ -82,7 +80,7 @@ the path to perform the conversion to a vector graphic. The C<png> option also
 requires Image::Magick to convert the graphic to PNG.
 
 The scale of the PNG is set to approximate the size produced by the original
-dilpad.cgi script, which isn't necessarily useful. For more flexibility, choose
+2pad.cgi script, which isn't necessarily useful. For more flexibility, choose
 C<eps> instead and then run your own conversions.
 
 =head2 Comment parameters
@@ -99,18 +97,18 @@ following keys are reserved to only have this meaning:
 
 =head2 Generation parameters
 
-Please refer to L<GEDA::PCB::Footprint::Dilpad> for a description of the
+Please refer to L<GEDA::PCB::Footprint::Twopad> for a description of the
 parameters used in generating the footprint.
 
 =head1 AUTHOR
 
 Peter S. May, L<http://psmay.com/>
 
-Based, by way of substantial refactoring, on dilpad.cgi by DJ Delorie.
+Based, by way of substantial refactoring, on 2pad.cgi by DJ Delorie.
 
 =head1 COPYRIGHT
 
-dilpad.pl, a footprint generator for surface-mount DIL parts in gEDA pcb
+2pad.pl, a footprint generator for 2-pad surface-mount parts in gEDA pcb
 
 Copyright (C) 2008-2014 DJ Delorie, Peter S. May
 
