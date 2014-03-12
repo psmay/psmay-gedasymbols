@@ -48,8 +48,13 @@ To the project `.gsch2pcb` file, add:
 
 ## Terms
 
-Unless otherwise noted, all files in this repository are subject to the terms
-of the MIT License (the OSI version), which reads thus:
+Files are licensed as marked; in particular, some files in the `tools`
+directory are under GNU GPL v2+, and some non-generated symbols and footprints
+may indicate their own licenses.
+
+If no license is indicated for a file in this repository, the contents of the
+file are subject to the terms of the MIT License (the OSI-approved version),
+which reads thus:
 
 > Copyright © 2013-2014 Peter S. May
 > 
@@ -70,4 +75,3 @@ of the MIT License (the OSI version), which reads thus:
 > LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 > OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 > SOFTWARE.
-

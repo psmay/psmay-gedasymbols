@@ -175,6 +175,9 @@ sub _element {
 		my $pinname = $q{pinnames}{$pad};
 		my $pinnumber = $q{pinnumbers}{$pad};
 
+		#push @output, $self->_pad_center(
+		#	$x, $y, 2*$q{dx}, 2*$q{dy},
+		#	$q{c}, $q{m}, $pinname, $pinnumber, "square");
 		push @output, $self->_pad($x*($q{px}+$q{dx}), $y+$q{dy}, $x*($q{px}-$q{dx}),
 			$y-$q{dy}, $q{pt}, $q{c}*2, $q{m}*2 + $q{pt}, $pinname, $pinnumber, "square");
 	}
@@ -440,7 +443,7 @@ all of the pads.
 	lw = lead width (between edges of single pin)
 
 	ll = lead length (between ends of single pin)
-	pl = pad length (inner to outer edge of a pad)
+	pl = pad length (inner to outer end of a pad)
 	ple = pad length extension (between end of pin and matching end of pad,
 		can be % of ll)
 	pwe = pad width extension (between edge of pin and matching edge of pad,

@@ -13,6 +13,7 @@ dil () {
 # see the dilpad.pl perldoc for the meanings of these parameters
 
 GEN="units=mm seq=A c=5mil m=6.54mil so=10mil sw=10mil"
+
 MO150_X="$GEN bw=5.3 cw=7.8 e=.65 pl=2.25 plc=6.55"
 MO150="$MO150_X pw=0.43"
 MO150_T="$MO150_X pw=0.38"
@@ -35,3 +36,9 @@ D='dimensions-based-on=http://www.nxp.com/documents/data_sheet/PMN27XPE.pdf'
 dil TSOP6 "$Y" "$D" $TSOP6
 dil TSOP6_DDGSDD "$Y, DDGSDD" "$D" $TSOP6 1=D 2=D 3=G 4=S 5=D 6=D
 dil TSOP6_G1S2G2D2S1D1 "$Y, G1S2G2D2S1D1" "$D" $TSOP6 1=G1 2=S2 3=G2 4=D2 5=S1 6=D1
+
+SOT363="$GEN bl=2 bw=1.25 cw=2.1 e=0.65 lw=0.2 pl=0.7 plc=1.6 pw=0.3 np=6"
+Y='SOT-363'
+D='dimensions-based-on=http://www.infineon.com/cms/packages/SMD_-_Surface_Mounted_Devices/SOT/SOT363_xSC88x.html?__locale=en'
+AKA='aka=SC88, SC70-6, TSSOP6'
+dil SOT363 "$Y" "$D" "$AKA" $SOT363

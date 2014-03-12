@@ -84,48 +84,193 @@ sub _round {
 sub _line {
 	shift;
 	# Generate ElementLine.
+	# x1, y1: start of line segment
+	# x2, y2: end of line segment
+	# thickness: stroke width
 	my ($x1, $y1, $x2, $y2, $t) = @_;
 	sprintf("\tElementLine[%d %d %d %d %d]\n",
 			$x1, $y1, $x2, $y2, $t);
 }
 
-sub _arc {
+sub _elliptical_arc {
 	shift;
-	# Generate ElementArc.
-	my ($x, $y, $r, $sa, $da, $t) = @_;
+	# Generate elliptical ElementArc.
+	# x, y: center
+	# width, height: horizontal, vertical radius
+	# start: start angle, degrees, 0 pointing -x
+	# span: span angle, degrees counterclockwise
+	# thickness: stroke width
+	my ($x, $y, $width, $height, $start, $span, $thickness) = @_;
 	sprintf("\tElementArc[%d %d %d %d %d %d %d]\n",
-			$x, $y, $r, $r, $sa, $da, $t);
+			$x, $y, $width, $height, $start, $span, $thickness);
+}
+
+sub _arc {
+	my $self = shift;
+	# Generate circular ElementArc.
+	my ($x, $y, $r, $sa, $da, $t) = @_;
+	return $self->_elliptical_arc($x, $y, $r, $r, $sa, $da, $t);
 }
 
 sub _pad {
 	shift;
 	# Generate Pad.
-	my ($a0, $a1, $a2, $a3, $a4, $a5, $a6, $lname, $rname, $flags) = @_;
-	sprintf("\tPad[%d %d %d %d %d %d %d \"%s\" \"%s\" \"%s\"]\n",
-		$a0, $a1, $a2, $a3, $a4, $a5, $a6, $lname, $rname, $flags);
+	# x1, y1: start of line segment
+	# x2, y2: end of line segment
+	# thickness: stroke width
+	# clearance_thickness: stroke width of gap between this and other copper
+	# mask: stroke width of hole in surrounding mask
+	# name: arbitrary descriptive name
+	# number: number/name of pad for net connections
+	# flags: comma-separated list
+	my ($x1, $y1, $x2, $y2,
+		$thickness, $clearance_thickness, $mask,
+		$name, $number, $flags) = @_;
+	sprintf(qq(\tPad[%d %d %d %d %d %d %d "%s" "%s" "%s"]\n),
+		$x1, $y1, $x2, $y2,
+		$thickness, $clearance_thickness, $mask,
+		$name, $number, $flags);
 }
 
-sub _box {
+sub _pad_center {
 	my $self = shift;
-	# Generate a rectangle.
-	my ($x1, $y1, $x2, $y2, $t) = @_;
-	if (@_ == 3) {
-		# Given only 3 parameters, draw centered on the origin.
-		my ($w, $h, $t_) = @_;
-		($x1, $y1, $x2, $y2, $t) = (-$w/2, -$h/2, $w/2, $h/2, $t_);
+	# Generate pad using center, width, and height.
+	# x, y: center
+	# width, height: width and height of pad
+	# clearance_extension: direct gap between this and other copper
+	# mask_extension: direct gap between this and surrounding mask
+	# name: arbitrary descriptive name
+	# number: number/name of pad for net connections
+	# flags: comma-separated list
+	my ($x, $y, $width, $height,
+		$clearance_extension, $mask_extension,
+		$name, $number, $flags) = @_;
+
+	my $wr = $width / 2;
+	my $hr = $height / 2;
+
+	$self->_pad_corners($x - $wr, $y - $hr, $x + $wr, $y + $hr,
+		$clearance_extension, $mask_extension,
+		$name, $number, $flags);
+}
+
+sub _pad_corners {
+	my $self = shift;
+	# Generate Pad using rectangle corners.
+	# left, top, right, bottom: bounds of rectangle
+	# clearance_extension: direct gap between this and other copper
+	# mask_extension: direct gap between this and surrounding mask
+	# name: arbitrary descriptive name
+	# number: number/name of pad for net connections
+	# flags: comma-separated list
+	my($left, $top, $right, $bottom,
+		$clearance_extension, $mask_extension,
+		$name, $number, $flags) = @_;
+
+	($top, $bottom) = ($bottom, $top) if $top > $bottom;
+	($left, $right) = ($right, $left) if $left > $right;
+
+	my $w = $right - $left;
+	my $h = $bottom - $top;
+
+	my($sw, $x1, $y1, $x2, $y2);
+
+	if($w < $h) {
+		# Vertical segment.
+		$sw = $w;
+		my $sr = $sw / 2;
+		$x1 = $x2 = $left + $sr;
+		$y1 = $top + $sr;
+		$y2 = $bottom - $sr;
 	}
+	else {
+		# Horizontal segment.
+		$sw = $h;
+		my $sr = $sw / 2;
+		$y1 = $y2 = $top + $sr;
+		$x1 = $left + $sr;
+		$x2 = $right - $sr;
+	}
+
+	my $clearance_sw = $sw + (2 * $clearance_extension);
+	my $mask_sw = $sw + (2 * $mask_extension);
+
+	$self->_pad($x1, $y1, $x2, $y2, $sw, $clearance_sw, $mask_sw, $name, $number, $flags);
+}
+
+sub _pin {
+	shift;
+	# Generate Pin.
+	# x, y: center
+	# thickness: diameter
+	# clearance_thickness: diameter of gap between this and other copper
+	# mask: diameter of hole in surrounding mask
+	# hole: diameter of drill hole
+	# name: arbitrary descriptive name
+	# number: number/name of pin for net connections
+	# flags: comma-separated list
+	my ($x, $y,
+		$thickness, $clearance_thickness, $mask, $hole,
+		$name, $number, $flags) = @_;
+	sprintf(qq(\tPin[%d %d %d %d %d %d "%s" "%s" "%s"]\n),
+		$x, $y,
+		$thickness, $clearance_thickness, $mask, $hole,
+		$name, $number, $flags);
+}
+
+sub _box_corners {
+	my $self = shift;
+	# Generate a rectangle from silk lines using the given corners.
+	# x1, y1: first corner
+	# x2, y2: second corner
+	# t: stroke width
+	my ($x1, $y1, $x2, $y2, $t) = @_;
 	$self->_line($x1, $y1, $x1, $y2, $t) .
 	$self->_line($x1, $y1, $x2, $y1, $t) .
 	$self->_line($x2, $y2, $x1, $y2, $t) .
 	$self->_line($x2, $y2, $x2, $y1, $t);
 }
 
+sub _box_origin {
+	my $self = shift;
+	# Generate a rectangle from silk lines, centered on the origin.
+	# w: width
+	# h: height
+	# t: stroke width
+	my ($w, $h, $t) = @_;
+	$self->_box_corners(-$w/2, -$h/2, $w/2, $h/2, $t);
+}
+
+sub _box {
+	my $self = shift;
+	# Generate a rectangle from silk lines.
+	# Either _box_corners or _box_origin depending on argument count.
+	+(@_ == 3) ? $self->_box_origin(@_) : $self->_box_corners(@_);
+}
+
 sub _element_head {
 	shift;
-	my ($s0, $description, $refdes, $val, $n1, $n2, $n3, $n4, $n5, $n6, $s1) = @_;
+	# Generate the header part of an element.
+	# element_flags: (usually blank)
+	# description: arbitrary descriptive text
+	# refdes: genericized refdes, such as "U?"
+	# value: component value
+	# center_x, center_y: location of center mark
+	# text_x, text_y: location of refdes text
+	# text_direction: (0..3) direction of text,
+	# 	in 90-degree ccw increments, 0 being +x
+	# text_scale: refdes font size in percent of normal (usu. 100)
+	# text_flags: (usu. blank)
+	my ($element_flags, $description, $refdes, $value,
+		$center_x, $center_y,
+		$text_x, $text_y, $text_direction, $text_scale, $text_flags) = @_;
 	
-	return sprintf('Element["%s" "%s" "%s" "%s" %d %d %d %d %d %d "%s"]' . "\n(\n",
-		$s0, $description, $refdes, $val, $n1, $n2, $n3, $n4, $n5, $n6, $s1);
+	return sprintf(
+		'Element["%s" "%s" "%s" "%s" %d %d %d %d %d %d "%s"]' .
+		"\n(\n",
+		$element_flags, $description, $refdes, $value,
+		$center_x, $center_y,
+		$text_x, $text_y, $text_direction, $text_scale, $text_flags);
 }
 
 sub _element_tail { ")\n" }
