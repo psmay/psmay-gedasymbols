@@ -9,47 +9,7 @@ use 5.010;
 
 use GEDA::PCB::Footprint::Twopad;
 
-my %params = ();
-my @comments = ();
-
-push @comments, "\n";
-push @comments, "# Generated footprint using 2pad.pl\n";
-
-for(@ARGV) {
-	if(/^\s*(.*?)\s*=(.*)$/) {
-		my $k = $1;
-		my $v = $2;
-		if(exists($params{$k}) and $params{$k} ne $v) {
-			croak "Conflicting values for parameter $k: $params{$k} vs. $v";
-		}
-		$params{$k} = $v;
-		push @comments, "# $k = $v\n";
-	}
-	else {
-		croak "Malformed parameter: $_";
-	}
-}
-
-{
-	my $gen = new GEDA::PCB::Footprint::Twopad %params;
-	$params{format} //= 'pcb';
-	
-	given ($params{format}) {
-		when('pcb') {
-			print join('', @comments);
-			$gen->write_footprint_to_handle;
-		}
-		when('eps') {
-			binmode(select);
-			$gen->write_eps_to_handle;
-		}
-		when('png') {
-			binmode(select);
-			$gen->write_png_to_handle;
-		}
-		default { croak "Parameter 'format' must be set to png, pcb, or eps"; }
-	}
-}
+GEDA::PCB::Footprint::Twopad->as_script("2pad.pl", @ARGV);
 
 __END__
 
