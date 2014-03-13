@@ -241,6 +241,60 @@ sub _box_origin {
 	$self->_box_corners(-$w/2, -$h/2, $w/2, $h/2, $t);
 }
 
+sub _box_round_corners {
+	my $self = shift;
+	# Generate a rounded rectangle from silk lines using the given corners and radii.
+	# The arc for a corner is omitted if the radius is 0.
+	# x1, y1 need not be up and left of x2, y2; the points and arcs are
+	# automatically rearranged as necessary.
+	# x1, y1: first corner
+	# x2, y2: second corner
+	# r11: radius of corner x1, y1
+	# r21: radius of corner x2, y1
+	# r22: radius of corner x2, y2
+	# r12: radius of corner x1, y2
+	# t: stroke width
+	my ($x1, $y1, $x2, $y2, $r11, $r21, $r22, $r12, $t) = @_;
+
+	# Reorder points so that x1, y1 is up and left of x2, y2.
+	# Otherwise, the arcs are drawn in the wrong orientation.
+	if($x1 > $x2) {
+		($x1, $x2) = ($x2, $x1);
+		($r11, $r21) = ($r21, $r11);
+		($r12, $r22) = ($r22, $r12);
+	}
+	if($y1 > $y2) {
+		($y1, $y2) = ($y2, $y1);
+		($r11, $r12) = ($r12, $r11);
+		($r22, $r21) = ($r21, $r22);
+	}
+
+	my @out;
+
+	# top-left
+	push @out, $self->_arc($x1 + $r11, $y1 + $r11, $r11, 270, 90, $t)
+		if $r11 != 0;
+	# top
+	push @out, $self->_line($x1 + $r11, $y1, $x2 - $r21, $y1, $t);
+	# top-right
+	push @out, $self->_arc($x2 - $r21, $y1 + $r21, $r21, 180, 90, $t)
+		if $r21 != 0;
+	# right
+	push @out, $self->_line($x2, $y1 + $r21, $x2, $y2 - $r22, $t);
+	# bottom-right
+	push @out, $self->_arc($x2 - $r22, $y2 - $r22, $r22, 90, 90, $t)
+		if $r22 != 0;
+	# bottom
+	push @out, $self->_line($x2 - $r22, $y2, $x1 + $r12, $y2, $t);
+	# bottom-left
+	push @out, $self->_arc($x1 + $r12, $y2 - $r12, $r12, 0, 90, $t)
+		if $r12 != 0;
+	# left
+	push @out, $self->_line($x1, $y2 - $r12, $x1, $y1 + $r11, $t);
+	
+	return join('', @out);
+}
+
 sub _box {
 	my $self = shift;
 	# Generate a rectangle from silk lines.

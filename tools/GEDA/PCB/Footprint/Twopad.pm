@@ -134,23 +134,38 @@ sub _element {
 
 	my @output = ();
 
+	my $c = $q{c};
+	my $dx = $q{dx};
+	my $dy = $q{dy};
+	my $l = $q{l};
+	my $m = $q{m};
+	my $pt = $q{pt};
+	my $px = $q{px};
+	my $s = $q{s};
+	my $t = $q{t};
+	my $w = $q{w};
 
 	push @output, $self->_element_head("", $q{description}, $q{refdes}, $q{id}, 0, 0, 0, 0, 0, 100, "");
 
-	push @output, $self->_pad(-$q{px} + $q{dx}, $q{dy}, -$q{px}-$q{dx}, -$q{dy}, $q{pt}, $q{c}*2, $q{m}*2 + $q{pt}, $q{pinnames}{1}, $q{pinnumbers}{1}, "square");
-	push @output, $self->_pad($q{px} + $q{dx}, $q{dy}, $q{px}-$q{dx}, -$q{dy}, $q{pt}, $q{c}*2, $q{m}*2 + $q{pt}, $q{pinnames}{2}, $q{pinnumbers}{2}, "square");
+	push @output, $self->_pad(-$px+$dx, $dy, -$px-$dx, -$dy, $pt, $c*2, $m*2 + $pt, $q{pinnames}{1}, $q{pinnumbers}{1}, "square");
+	push @output, $self->_pad($px+$dx, $dy, $px-$dx, -$dy, $pt, $c*2, $m*2 + $pt, $q{pinnames}{2}, $q{pinnumbers}{2}, "square");
 
 	if ($q{pol}) {
 		push @output, $self->_box($q{cl}, $q{cw}, 1);
 	}
 
-	push @output,
-		$self->_line(-$q{l}, -$q{w}-$q{s}, $q{l}+$q{s}, -$q{w}-$q{s}, $q{t}),
-		$self->_line(-$q{l}, $q{w}+$q{s}, $q{l}+$q{s}, $q{w}+$q{s}, $q{t}),
-		$self->_line($q{l}+$q{s}, -$q{w}-$q{s}, $q{l}+$q{s}, $q{w}+$q{s}, $q{t}),
-		$self->_line(-$q{l}-$q{s}, -$q{w}, -$q{l}-$q{s}, $q{w}, $q{t}),
-		$self->_arc(-$q{l}, -$q{w}, $q{s}, $q{s}, 0, -90, $q{t}),
-		$self->_arc(-$q{l}, $q{w}, $q{s}, $q{s}, 0, 90, $q{t});
+	# Actual box
+	my $xr = $l;
+	my $xl = -$xr;
+	my $yb = $w;
+	my $yt = -$yb;
+	# Box extended by silk clearance
+	my $ybr = $yb + $s;
+	my $xrr = $xr + $s;
+	my $ytr = -$ybr;
+	my $xlr = -$xrr;
+
+	push @output, $self->_box_round_corners($xlr, $ytr, $xrr, $ybr, $s, 0, 0, $s, $t);
 
 	push @output, $self->_element_tail();
 

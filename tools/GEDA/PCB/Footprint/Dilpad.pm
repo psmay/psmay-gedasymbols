@@ -268,13 +268,11 @@ sub _with_silk_around_footprint {
 	# footprint.
 	my $w = max($q{bw}, $q{cw}+$q{s}, $q{pxl}+$q{s})/2;
 	my $r = max($q{soc}, ($q{bl} - ($q{e}*($q{np2}-1)+$q{pw}))/2);
+	my $t = $q{t};
+	my $l = $q{l};
 
-	return
-		$self->_line(-$w+$r, -$q{l}, $w, -$q{l}, $q{t}) .
-		$self->_line(-$w, $q{l}, $w, $q{l}, $q{t}) .
-		$self->_line( $w, -$q{l}, $w, $q{l}, $q{t}) .
-		$self->_line(-$w, $q{l}, -$w, -$q{l}+$r, $q{t}) .
-		$self->_arc(-$w+$r, -$q{l}+$r, $r, 270, 90, $q{t});
+	return $self->_box_round_corners(
+		-$w, -$l, $w, $l, $r, 0, 0, 0, $t);
 }
 
 sub _with_silk_between_pads {
