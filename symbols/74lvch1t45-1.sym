@@ -118,7 +118,7 @@ B 1975 575 50 50 3 0 0 0 -1 -1 0 -1 -1 -1 -1 -1
 L 500 1200 200 1200 3 0 0 0 -1 -1
 L 500 1200 500 1500 3 0 0 0 -1 -1
 T 75 100 0 1 0 0 0 0 1
-gedasymbols::url=http://bazaar.launchpad.net/~psmay/+junk/psmay-gedasymbols/view/head:/symbols/74lvch1t45-1.sym
+gedasymbols::url=https://github.com/psmay/psmay-gedasymbols/blob/master/symbols/74lvch1t45-1.sym
 T 75 4745 8 10 0 0 0 0 1
 symversion=1
 T 75 4250 8 10 0 0 0 0 1
