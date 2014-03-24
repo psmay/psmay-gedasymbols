@@ -1,5 +1,8 @@
 #!/usr/bin/perl
 
+eval 'exec /usr/bin/perl  -S $0 ${1+"$@"}'
+    if 0; # not running under some shell
+
 # Please refer to the copyright notice at the end of this file.
 
 use warnings;
@@ -7,22 +10,22 @@ use strict;
 use Carp;
 use 5.010;
 
-use GEDA::PCB::Footprint::Dilpad;
+use GEDA::Machinery::PCB::Footprint::Dilpad;
 
-GEDA::PCB::Footprint::Dilpad->as_script("dilpad.pl", @ARGV);
+GEDA::Machinery::PCB::Footprint::Dilpad->as_script("footprint-dilpad", @ARGV);
 
 __END__
 
 =head1 NAME
 
-dilpad.pl - a modest extension of DJ Delorie's DIL footprint generator
+footprint-dilpad - a modest extension of DJ Delorie's DIL footprint generator
 
 =head1 SYNOPSIS
 
-	perl dilpad.pl key1=value1 ... keyN=valueN > output.fp
+	perl footprint-dilpad key1=value1 ... keyN=valueN > output.fp
 
 	# Example: One possibility for SSOP-28
-	perl dilpad.pl \
+	perl footprint-dilpad \
 		id=SSOP28 "description=SSOP-28 (JEDEC MP-150-AH)" \
 		units=mm seq=A c=0.127 m=0.3 so=0.2 sw=0.6 \
 		bw=5.3 cw=7.8 e=0.65 pl=2.25 plc=6.55 pw=0.43 \
@@ -59,7 +62,7 @@ following keys are reserved to only have this meaning:
 
 =head2 Generation parameters
 
-Please refer to L<GEDA::PCB::Footprint::Dilpad> for a description of the
+Please refer to L<GEDA::Machinery::PCB::Footprint::Dilpad> for a description of the
 parameters used in generating the footprint.
 
 =head1 AUTHOR
@@ -70,7 +73,7 @@ Based, by way of substantial refactoring, on dilpad.cgi by DJ Delorie.
 
 =head1 COPYRIGHT
 
-dilpad.pl, a footprint generator for surface-mount DIL parts in gEDA pcb
+footprint-dilpad, a footprint generator for surface-mount DIL parts in gEDA pcb
 
 Copyright (C) 2008-2014 DJ Delorie, Peter S. May
 

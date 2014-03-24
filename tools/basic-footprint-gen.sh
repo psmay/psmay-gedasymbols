@@ -1,5 +1,9 @@
 #!/bin/sh
 
+MACH=./GEDA-Machinery
+
+PATH=$PATH:$MACH/bin
+PERL5LIB=$PATH:$MACH/lib/perl5
 DEST=../footprints
 
 dil () {
@@ -7,12 +11,12 @@ dil () {
 	shift
 	desc="$1"
 	shift
-	./dilpad.pl id="$id" description="$desc" "$@" > "$DEST/$id.fp"
+	footprint-dilpad id="$id" description="$desc" "$@" > "$DEST/$id.fp"
 }
 
 # see the dilpad.pl perldoc for the meanings of these parameters
 
-GEN="units=mm seq=A c=5mil m=6.54mil so=10mil sw=10mil"
+GEN="units=mm seq=A c=10mil m=10mil so=10mil sw=10mil"
 
 MO150_X="$GEN bw=5.3 cw=7.8 e=.65 pl=2.25 plc=6.55"
 MO150="$MO150_X pw=0.43"

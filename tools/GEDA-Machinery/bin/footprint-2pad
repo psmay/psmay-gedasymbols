@@ -1,5 +1,8 @@
 #!/usr/bin/perl
 
+eval 'exec /usr/bin/perl  -S $0 ${1+"$@"}'
+    if 0; # not running under some shell
+
 # Please refer to the copyright notice at the end of this file.
 
 use warnings;
@@ -7,22 +10,22 @@ use strict;
 use Carp;
 use 5.010;
 
-use GEDA::PCB::Footprint::Twopad;
+use GEDA::Machinery::PCB::Footprint::Twopad;
 
-GEDA::PCB::Footprint::Twopad->as_script("2pad.pl", @ARGV);
+GEDA::Machinery::PCB::Footprint::Twopad->as_script("footprint-2pad", @ARGV);
 
 __END__
 
 =head1 NAME
 
-2pad.pl - a modest extension of DJ Delorie's 2-pad footprint generator
+footprint-2pad - a modest extension of DJ Delorie's 2-pad footprint generator
 
 =head1 SYNOPSIS
 
-	perl 2pad.pl key1=value1 ... keyN=valueN > output.fp
+	perl footprint-2pad key1=value1 ... keyN=valueN > output.fp
 
 	# Example
-	perl 2pad.pl \
+	perl footprint-2pad \
 		id=TWOPIN_EXAMPLE "description=Example two-pin device" \
 		units=mm c=0.127 m=0.3 plc=1.9 pt=0.3 pw=1.6 so=0.2 sw=0.2
 
@@ -57,7 +60,7 @@ following keys are reserved to only have this meaning:
 
 =head2 Generation parameters
 
-Please refer to L<GEDA::PCB::Footprint::Twopad> for a description of the
+Please refer to L<GEDA::Machinery::PCB::Footprint::Twopad> for a description of the
 parameters used in generating the footprint.
 
 =head1 AUTHOR
@@ -68,7 +71,7 @@ Based, by way of substantial refactoring, on 2pad.cgi by DJ Delorie.
 
 =head1 COPYRIGHT
 
-2pad.pl, a footprint generator for 2-pad surface-mount parts in gEDA pcb
+footprint-2pad, a footprint generator for 2-pad surface-mount parts in gEDA pcb
 
 Copyright (C) 2008-2014 DJ Delorie, Peter S. May
 
