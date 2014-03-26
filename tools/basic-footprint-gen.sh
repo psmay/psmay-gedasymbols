@@ -1,9 +1,9 @@
 #!/bin/sh
 
-MACH=./GEDA-Machinery
+# If GEDA::Machinery is not installed globally, ensure that it is accounted for
+# in the PERL5LIB and PATH variables.
+# Get it from https://github.com/psmay/GEDA-Machinery
 
-PATH=$PATH:$MACH/bin
-PERL5LIB=$PATH:$MACH/lib/perl5
 DEST=../footprints
 
 dil () {
