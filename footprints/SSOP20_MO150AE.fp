@@ -3,6 +3,7 @@
 # id = SSOP20_MO150AE
 # description = SSOP-20 5.3mm-wide body (JEDEC MO-150-AE)
 # dimensions-based-on = National Semiconductor drawing (SC)MKT-MSA20 rev C
+# aka = MO150AE, SOT339, SOT339-1, SSOP20
 # units = mm
 # seq = A
 # c = 10mil

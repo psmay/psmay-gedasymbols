@@ -3,6 +3,7 @@
 # id = SSOP28_MO150AH
 # description = SSOP-28 5.3mm-wide body (JEDEC MO-150-AH)
 # dimensions-based-on = National Semiconductor drawing (SC)MKT-MSA28 rev C
+# aka = MO150AH, SOT341, SOT341-1, SSOP28
 # units = mm
 # seq = A
 # c = 10mil

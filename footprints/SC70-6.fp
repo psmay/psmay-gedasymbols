@@ -1,9 +1,9 @@
 
 # Generated footprint using footprint-dilpad
-# id = SOT363
-# description = SOT-363
+# id = SC70-6
+# description = SC70-6
 # dimensions-based-on = http://www.infineon.com/cms/packages/SMD_-_Surface_Mounted_Devices/SOT/SOT363_xSC88x.html?__locale=en
-# aka = SC88, SC70-6, TSSOP6
+# aka = SC70-6, SC88, SOT363, TUMT6, UMD6, UMT6, US6
 # units = mm
 # seq = A
 # c = 10mil
@@ -19,7 +19,7 @@
 # plc = 1.6
 # pw = 0.3
 # np = 6
-Element["" "SOT-363" "U?" "SOT363" 0 0 0 0 0 100 ""]
+Element["" "SC70-6" "U?" "SC70-6" 0 0 0 0 0 100 ""]
 (
 	Pad[-3937 -2559 -2362 -2559 1181 2000 3181 "1" "1" "square"]
 	Pad[-3937 0 -2362 0 1181 2000 3181 "2" "2" "square"]

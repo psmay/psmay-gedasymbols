@@ -1,8 +1,9 @@
 
 # Generated footprint using footprint-dilpad
-# id = TSOP6_G1S2G2D2S1D1
-# description = TSOP-6, G1S2G2D2S1D1
+# id = SOT23-6_G1S2G2D2S1D1
+# description = SOT23-6, G1S2G2D2S1D1
 # dimensions-based-on = http://www.nxp.com/documents/data_sheet/PMN27XPE.pdf
+# aka = S6, SC74, SMD6, SMT6, SOT23-6, SOT457, SuperSOT6, TSMT6, TSOP6
 # units = mm
 # seq = A
 # c = 10mil
@@ -24,7 +25,7 @@
 # 4 = D2
 # 5 = S1
 # 6 = D1
-Element["" "TSOP-6, G1S2G2D2S1D1" "U?" "TSOP6_G1S2G2D2S1D1" 0 0 0 0 0 100 ""]
+Element["" "SOT23-6, G1S2G2D2S1D1" "U?" "SOT23-6_G1S2G2D2S1D1" 0 0 0 0 0 100 ""]
 (
 	Pad[-5216 -3740 -4232 -3740 2165 2000 4165 "1" "G1" "square"]
 	Pad[-5216 0 -4232 0 2165 2000 4165 "2" "S2" "square"]
