@@ -60,13 +60,22 @@
 # names like this as far as is possible.)
 
 DEST=../footprints
+URL_DEST="https://github.com/psmay/psmay-gedasymbols/raw/master/footprints"
+
+AUTHOR="Peter S. May"
+EMAIL="gedasymbols@psmay.com"
+DIST_LICENSE=unlimited
+USE_LICENSE=unlimited
 
 dil () {
 	id="$1"
 	shift
 	desc="$1"
 	shift
-	footprint-dilpad id="$id" description="$desc" "$@" > "$DEST/$id.fp"
+	footprint-dilpad id="$id" description="$desc" \
+		author="$AUTHOR" email="$EMAIL" dist-license="$DIST_LICENSE" use-license="$USE_LICENSE" \
+		"@gedasymbols::url=$URL_DEST/$id.fp" \
+		"$@" > "$DEST/$id.fp"
 }
 
 akas () {

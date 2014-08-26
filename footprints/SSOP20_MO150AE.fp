@@ -1,7 +1,12 @@
+# description: SSOP-20 5.3mm-wide body (JEDEC MO-150-AE)
+# author: Peter S. May
+# email: gedasymbols@psmay.com
+# dist-license: unlimited
+# use-license: unlimited
+
 
 # Generated footprint using footprint-dilpad
 # id = SSOP20_MO150AE
-# description = SSOP-20 5.3mm-wide body (JEDEC MO-150-AE)
 # dimensions-based-on = National Semiconductor drawing (SC)MKT-MSA20 rev C
 # aka = MO150AE, SOT339, SOT339-1, SSOP20
 # units = mm
@@ -20,6 +25,7 @@
 # bl = 7.2
 Element["" "SSOP-20 5.3mm-wide body (JEDEC MO-150-AE)" "U?" "SSOP20_MO150AE" 0 0 0 0 0 100 ""]
 (
+	Attribute("gedasymbols::url" "https://github.com/psmay/psmay-gedasymbols/raw/master/footprints/SSOP20_MO150AE.fp")
 	Pad[-16476 -11515 -9311 -11515 1692 2000 3692 "1" "1" "square"]
 	Pad[-16476 -8956 -9311 -8956 1692 2000 3692 "2" "2" "square"]
 	Pad[-16476 -6397 -9311 -6397 1692 2000 3692 "3" "3" "square"]

@@ -1,7 +1,12 @@
+# description: SSOP-28 5.3mm-wide body (JEDEC MO-150-AH)
+# author: Peter S. May
+# email: gedasymbols@psmay.com
+# dist-license: unlimited
+# use-license: unlimited
+
 
 # Generated footprint using footprint-dilpad
 # id = SSOP28_MO150AH
-# description = SSOP-28 5.3mm-wide body (JEDEC MO-150-AH)
 # dimensions-based-on = National Semiconductor drawing (SC)MKT-MSA28 rev C
 # aka = MO150AH, SOT341, SOT341-1, SSOP28
 # units = mm
@@ -20,6 +25,7 @@
 # bl = 10.2
 Element["" "SSOP-28 5.3mm-wide body (JEDEC MO-150-AH)" "U?" "SSOP28_MO150AH" 0 0 0 0 0 100 ""]
 (
+	Attribute("gedasymbols::url" "https://github.com/psmay/psmay-gedasymbols/raw/master/footprints/SSOP28_MO150AH.fp")
 	Pad[-16476 -16633 -9311 -16633 1692 2000 3692 "1" "1" "square"]
 	Pad[-16476 -14074 -9311 -14074 1692 2000 3692 "2" "2" "square"]
 	Pad[-16476 -11515 -9311 -11515 1692 2000 3692 "3" "3" "square"]

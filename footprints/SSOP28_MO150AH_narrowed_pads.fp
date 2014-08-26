@@ -1,7 +1,12 @@
+# description: SSOP-28 5.3mm-wide body (JEDEC MO-150-AH), with narrowed 0.38mm pads
+# author: Peter S. May
+# email: gedasymbols@psmay.com
+# dist-license: unlimited
+# use-license: unlimited
+
 
 # Generated footprint using footprint-dilpad
 # id = SSOP28_MO150AH_narrowed_pads
-# description = SSOP-28 5.3mm-wide body (JEDEC MO-150-AH), with narrowed 0.38mm pads
 # dimensions-based-on = National Semiconductor drawing (SC)MKT-MSA28 rev C
 # units = mm
 # seq = A
@@ -19,6 +24,7 @@
 # bl = 10.2
 Element["" "SSOP-28 5.3mm-wide body (JEDEC MO-150-AH), with narrowed 0.38mm pads" "U?" "SSOP28_MO150AH_narrowed_pads" 0 0 0 0 0 100 ""]
 (
+	Attribute("gedasymbols::url" "https://github.com/psmay/psmay-gedasymbols/raw/master/footprints/SSOP28_MO150AH_narrowed_pads.fp")
 	Pad[-16574 -16633 -9212 -16633 1496 2000 3496 "1" "1" "square"]
 	Pad[-16574 -14074 -9212 -14074 1496 2000 3496 "2" "2" "square"]
 	Pad[-16574 -11515 -9212 -11515 1496 2000 3496 "3" "3" "square"]

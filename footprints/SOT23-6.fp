@@ -1,7 +1,12 @@
+# description: SOT23-6
+# author: Peter S. May
+# email: gedasymbols@psmay.com
+# dist-license: unlimited
+# use-license: unlimited
+
 
 # Generated footprint using footprint-dilpad
 # id = SOT23-6
-# description = SOT23-6
 # dimensions-based-on = http://www.nxp.com/documents/data_sheet/PMN27XPE.pdf
 # aka = S6, SC74, SMD6, SMT6, SOT23-6, SOT457, SuperSOT6, TSMT6, TSOP6
 # units = mm
@@ -21,6 +26,7 @@
 # np = 6
 Element["" "SOT23-6" "U?" "SOT23-6" 0 0 0 0 0 100 ""]
 (
+	Attribute("gedasymbols::url" "https://github.com/psmay/psmay-gedasymbols/raw/master/footprints/SOT23-6.fp")
 	Pad[-5216 -3740 -4232 -3740 2165 2000 4165 "1" "1" "square"]
 	Pad[-5216 0 -4232 0 2165 2000 4165 "2" "2" "square"]
 	Pad[-5216 3740 -4232 3740 2165 2000 4165 "3" "3" "square"]
