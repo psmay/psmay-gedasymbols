@@ -26,7 +26,7 @@ pintype=pas
 T 100 600 8 10 1 1 0 0 1
 refdes=R?
 T 100 400 8 10 1 1 0 0 1
-value=0Ω
+value=*Ω
 T 0 100 8 10 0 1 0 0 1
 pins=2
 T 0 100 8 10 0 1 0 0 1

@@ -30,7 +30,7 @@ device=CAPACITOR
 T 100 600 8 10 1 1 0 0 1
 refdes=C?
 T 100 400 8 10 1 1 0 0 1
-value=0.1µF
+value=*.*µF
 T 200 1400 5 10 0 0 0 0 1
 description=capacitor
 T 200 1200 5 10 0 0 0 0 1
