@@ -20,13 +20,23 @@ These instructions assume a working copy of this branch is at
 Substitute the actual location as necessary. Absolute paths should be used
 unless the usage is project-specific.
 
-### gschem
+### Per-project
+
+When including symbols or footprints in a project, be sure either to embed
+them or to include them in a project-local resource directory (i.e., as you
+would with anything from gedasymbols).
+
+### Globally (if you're me or a big fan)
+
+These are the instructions I follow to make everything appear by default.
+
+#### gschem
 
 To `~/.gEDA/gafrc`, add:
 
-	(component-library "/some-path/psmay-gedasymbols/symbols")
+	(component-library-search "/some-path/psmay-gedasymbols/symbols" "~psmay")
 
-### pcb
+#### pcb
 
 In preferences, under Library, add
 
@@ -37,12 +47,12 @@ necessary.
 
 (This is also the `library-newlib` setting in `~/.pcb/preferences`.)
 
-### gsch2pcb
+#### gsch2pcb
 
 Footprints are only mapped from the `footprint` attributes in a schematic if
 the `elements-dir` has been added to the project.
 
-To the project `.gsch2pcb` file, add:
+To the project `*.gsch2pcb` file, add:
 
 	elements-dir /some-path/psmay-gedasymbols/footprints
 
