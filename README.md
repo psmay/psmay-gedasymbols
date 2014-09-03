@@ -13,22 +13,39 @@ maintaining my gEDA stuff elsewhere for the time being.
 
 ## Usage
 
-These instructions assume a working copy of this branch is at
-
-	/some-path/psmay-gedasymbols
-
-Substitute the actual location as necessary. Absolute paths should be used
-unless the usage is project-specific.
-
 ### Per-project
 
 When including symbols or footprints in a project, be sure either to embed
 them or to include them in a project-local resource directory (i.e., as you
 would with anything from gedasymbols).
 
+If you're wondering how to do this, just follow the example of any given major
+gEDA project on Github. There are multiple different styles to choose from; a
+very simple one is that used by the project for [RepRap Generation 7
+Electronics] and goes something like this:
+
+* Add a `packages` directory at the top level of the project.
+* Toss all footprints and symbols into that directory.
+* PCB automatically includes a dir named `packages` into the library.
+* To get `gschem` to recognize it, create `gafrc` at the top level and add the
+  line `(component-library "./packages")`.
+
+Some projects prefer to use a directory called `sym` or `symbols` for the
+symbols. This only affects the `gafrc` line (substitude the directory name for
+`packages`).
+
+  [RepRap Generation 7 Electronics]: https://github.com/Traumflug/Generation_7_Electronics
+
 ### Globally (if you're me or a big fan)
 
 These are the instructions I follow to make everything appear by default.
+
+These instructions assume a working copy of this branch is at
+
+	/some-path/psmay-gedasymbols
+
+Substitute the actual location as necessary. Absolute paths should be used
+unless the usage is project-specific.
 
 #### gschem
 
