@@ -78,6 +78,27 @@ dil () {
 		"$@" > "$DEST/$id.fp"
 }
 
+box_notch_header () {
+	id="$1"
+	shift
+	desc="$1"
+	shift
+	columns="$1"
+	shift
+	rows="$1"
+	shift
+
+	subdir=headers
+	mkdir -p "$DEST/$subdir"
+
+	./box-header-with-notch.pl id="$id" description="$desc" \
+		@author="$AUTHOR" @email="$EMAIL" \
+		@dist-license="$DIST_LICENSE" @use-license="$USE_LICENSE" \
+		"@gedasymbols::url=$URL_DEST/$subdir/$id.fp" \
+		columns=$columns rows=$rows \
+		"$@" > "$DEST/$subdir/$id.fp"
+}
+
 akas () {
 	perl -E '$z{$_} = 1 for @ARGV; say "aka=" . join(", ", sort keys %z)' "$@"
 }
@@ -129,3 +150,8 @@ D='dimensions-based-on=http://www.infineon.com/cms/packages/SMD_-_Surface_Mounte
 AKA="`akas SC70-6 SOT363 SC88 UMT6 UMD6 TUMT6 US6`"
 dil "$Y" "$Y" "$D" "$AKA" $SC70_6
 
+for i in 3 4 5 6 7 8 10 12 13 15 17 20 22 25 30 32; do
+	Y="Header, ${i}x2, 100mil pitch, shrouded, notched"
+	box_notch_header Box_header_100mil_notch_"$i"x2 "$Y, ribbon cable numbering" $i 2
+	box_notch_header Box_header_100mil_notch_"$i"x2_DIP "$Y, DIP pin numbering" $i 2 dip
+done
