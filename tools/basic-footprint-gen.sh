@@ -67,15 +67,44 @@ EMAIL="gedasymbols@psmay.com"
 DIST_LICENSE=unlimited
 USE_LICENSE=unlimited
 
+catdirs () {
+	for fragment in "$@"; do
+		path="$path/$fragment"
+	done
+	# The result of this ends with a trailing slash unless it refers to the
+	# current directory.
+	echo -n "$path" | perl -p -E '
+		$_ = "./$_/";
+		# Collapse "/./"
+		while(s!/\./!/!g) {
+			# keep going
+		}
+		# Collapse multiple slashes
+		s!//+!/!g;
+		# Remove artificial start
+		s!^\./!!;
+	'
+}
+
 dil () {
+	dil_to "" "$@"
+}
+
+dil_to () {
+	subdir="$1"
+	shift
 	id="$1"
 	shift
 	desc="$1"
 	shift
+
+	subdir="`catdirs "$subdir"`"
+	mkdir -p "$DEST/$subdir"
+
 	footprint-dilpad id="$id" description="$desc" \
 		author="$AUTHOR" email="$EMAIL" dist-license="$DIST_LICENSE" use-license="$USE_LICENSE" \
-		"@gedasymbols::url=$URL_DEST/$id.fp" \
-		"$@" > "$DEST/$id.fp"
+		"@gedasymbols::url=$URL_DEST/$subdir$id.fp" \
+		"$@" > "$DEST/$subdir$id.fp"
 }
 
 box_notch_header () {
@@ -155,3 +184,16 @@ for i in 3 4 5 6 7 8 10 12 13 15 17 20 22 25 30 32; do
 	box_notch_header Box_header_100mil_notch_"$i"x2 "$Y, ribbon cable numbering" $i 2
 	box_notch_header Box_header_100mil_notch_"$i"x2_DIP "$Y, DIP pin numbering" $i 2 dip
 done
+
+
+# These "universal breakout" footprints are designed so that narrower variants
+# of the same kind of package can still be attached—the idea being that
+# generic breakout boards can use them.
+
+Y='SOIC-28 universal breakout footprint'
+Z="$GEN bw=7.50 cw=10.00 pw=0.60 e=1.27 pxl=11.6 g=3.4 np=28 bl=17.90"
+dil_to universal-breakout SOIC28_universal_breakout "$Y" $Z
+
+Y='SSOP-28 universal breakout footprint'
+Z="$GEN bw=5.3 cw=7.8 pw=0.43 e=.65 pxl=9.0 g=3.9 np=28 bl=10.2"
+dil_to universal-breakout SSOP28_universal_breakout "$Y" $Z
