@@ -136,6 +136,44 @@ akas () {
 
 GEN="units=mm seq=A c=10mil m=10mil so=10mil sw=10mil"
 
+# R-PDSO-G/SSOP-INCH Shrink Small Outline Package Family
+# .025" (.635mm) Lead Pitch .150" (3.81mm) Wide Body
+
+# bw (E1) = 154mil
+#	(Wonder why the family desc says 150...)
+# cw (E) = 236mil
+# e (e) = 25mil
+# Pad dimensions from land pattern in National MKT-MQA24 rev B
+# g (pad cols gap inner-inner) = 123mil
+# pxl (pad cols span outer-outer) = 296mil
+# pw (pad width) = 157mil
+
+draw_mo137a () {
+	sub="$1"
+	pins="$2"
+	bl="$3"
+
+	MO137_X="$GEN bw=154mil cw=236mil e=25mil g=123mil pxl=296mil"
+	MO137="$MO137_X pw=15.7mil"
+
+	#	AA	AB	AC	AD	AE	AF
+	#	14	16	18	20	24	28	pins
+	#	193	193	341	341	341 390	mil D (bl)
+
+	Y="QSOP-$pins 0.15in-wide body (JEDEC MO-137-$sub)"
+	Z="np=$pins bl=$bl"
+	D='dimensions-based-on=JEDEC MO-137, National Semiconductor drawing MKT-MQA24 rev B'
+	AKA="`akas QSOP$pins RPDSOG$pins DBQ$pins MQA$pins SSOPINCH$pins MO137$sub`"
+	dil QSOP"$pins"_MO137"$sub" "$Y" "$D" "$AKA" $MO137 $Z
+}
+
+draw_mo137a AA 14 193mil
+draw_mo137a AB 16 193mil
+draw_mo137a AC 18 341mil
+draw_mo137a AD 20 341mil
+draw_mo137a AE 24 341mil
+draw_mo137a AF 28 390mil
+
 MO150_X="$GEN bw=5.3 cw=7.8 e=.65 pl=2.25 plc=6.55"
 MO150="$MO150_X pw=0.43"
 MO150_T="$MO150_X pw=0.38"
