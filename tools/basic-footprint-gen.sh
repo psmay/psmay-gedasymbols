@@ -216,6 +216,8 @@ Y='SC70-6'
 D='dimensions-based-on=http://www.infineon.com/cms/packages/SMD_-_Surface_Mounted_Devices/SOT/SOT363_xSC88x.html?__locale=en'
 AKA="`akas SC70-6 SOT363 SC88 UMT6 UMD6 TUMT6 US6`"
 dil "$Y" "$Y" "$D" "$AKA" $SC70_6
+# Footprint for 2N7002DW dual NMOS
+dil "$Y"_S1G1D2S2G2D1 "$Y, S1G1D2S2G2D1" "$D" "$AKA" $SC70_6 1=S1 2=G1 3=D2 4=S2 5=G2 6=D1
 
 for i in 3 4 5 6 7 8 10 12 13 15 17 20 22 25 30 32; do
 	Y="Header, ${i}x2, 100mil pitch, shrouded, notched"
