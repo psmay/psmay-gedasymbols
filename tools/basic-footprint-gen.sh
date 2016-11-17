@@ -192,16 +192,32 @@ AKA="`akas SSOP28 MO150AH SOT341 SOT341-1`"
 dil SSOP28_MO150AH "$Y" "$D" "$AKA" $MO150 $Z
 dil SSOP28_MO150AH_narrowed_pads "$Y, with narrowed 0.38mm pads" "$D" $MO150_T $Z
 
-MS012_X="$GEN bw=3.90 cw=6.00 e=1.27 pl=1.50 plc=5.40"
+#       dilpad  JEDEC   MCT     description
+#       np      N       N       number of pads
+#       bw      E1      E1      body width
+#       bl      D       D       body length
+#       cw      E       E       component width (lead tip to lead tip)
+#       e       e       e, E*   lead pitch
+#       pl      n/a     Y*, Y1* pad length (pad outer-to-inner)
+#       plc     n/a     C*      pad length center-center (between centers of columns)
+#       pw      n/a     X*, X1* pad width (pad length perpendicular to pl)
+# * On recommended land pattern page of MCT packaging spec
+
+MS012_X="$GEN bw=3.90 cw=6.00 e=1.27 plc=5.40"
 MS012="$MS012_X pw=0.60"
 MS012_T="$MS012_X pw=0.55"
 
-Y='SOIC-14 narrow, 3.9mm-wide (JEDEC MS-012-AB)'
-Z='np=14 bl=8.65'
 D='dimensions-based-on=Microchip Packaging Specification DS00000049BR'
+
+Y='SOIC-8 narrow, 3.9mm-wide (JEDEC MS-012-AA)'
+Z='np=8 bl=4.90 pl=1.55'
+AKA="`akas SOIC8 MS012AA`"
+dil SOIC8_MS012AA "$Y" "$D" "$AKA" $MS012 $Z
+
+Y='SOIC-14 narrow, 3.9mm-wide (JEDEC MS-012-AB)'
+Z='np=14 bl=8.65 pl=1.50'
 AKA="`akas SOIC14 MS012AB`"
 dil SOIC14_MS012AB "$Y" "$D" "$AKA" $MS012 $Z
-dil SOIC14_MS012AB_narrowed_pads "$Y, with narrowed 0.55 pads" "$D" $MS012_T $Z
 
 SOT23_6="$GEN bl=2.9 bw=1.5 cw=2.75 e=0.95 lw=0.325 pl=0.8 plc=2.4 pw=0.55 np=6"
 Y='SOT23-6'

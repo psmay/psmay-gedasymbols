@@ -18,11 +18,11 @@
 # bw = 3.90
 # cw = 6.00
 # e = 1.27
-# pl = 1.50
 # plc = 5.40
 # pw = 0.60
 # np = 14
 # bl = 8.65
+# pl = 1.50
 Element["" "SOIC-14 narrow, 3.9mm-wide (JEDEC MS-012-AB)" "U?" "SOIC14_MS012AB" 0 0 0 0 0 100 ""]
 (
 	Attribute("gedasymbols::url" "https://github.com/psmay/psmay-gedasymbols/raw/master/footprints/SOIC14_MS012AB.fp")
