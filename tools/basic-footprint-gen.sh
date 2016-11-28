@@ -67,6 +67,35 @@ EMAIL="gedasymbols@psmay.com"
 DIST_LICENSE=unlimited
 USE_LICENSE=unlimited
 
+#       dilpad  JEDEC   MCT     description
+#       np      N       N       number of pads
+#       bw      E1      E1      body width
+#       bl      D       D       body length
+#       cw      E       E       component width (lead tip to lead tip)
+#       e       e       e, E*   lead pitch
+#       pl      n/a     Y*, Y1* pad length (pad outer-to-inner)
+#       plc     n/a     C*      pad length center-center (between centers of columns)
+#       pw      n/a     X*, X1* pad width (pad length perpendicular to pl)
+# * On recommended land pattern page of MCT packaging spec
+
+# g: gap (inner-to-inner of opposite pads)
+# pxl: pad extents length (outer-to-outer of opposite pads)
+# (g and pxl can replace plc and pl)
+
+# Mappings from JEDEC datum names to dilpad parameter names
+J_N="np"	# number of pads
+J_E1="bw"	# body width
+J_D="bl"	# body length
+J_E="cw"	# component width (between opposite lead tips)
+J_e="e"		# lead pitch (center-center of adjacent leads)
+
+# Mappings from Microchip land pattern names to dilpad parameter names
+M_X="pw"	# pad width (edge to edge of single pad, perpendicular to pl)
+M_X1="$M_X"
+M_Y="pl"	# pad length (outer to inner of single pad)
+M_Y1="$M_Y"
+M_C="plc"	# pad column pitch (between opposite pad centers)
+
 catdirs () {
 	for fragment in "$@"; do
 		path="$path/$fragment"
@@ -191,17 +220,6 @@ D='dimensions-based-on=National Semiconductor drawing (SC)MKT-MSA28 rev C'
 AKA="`akas SSOP28 MO150AH SOT341 SOT341-1`"
 dil SSOP28_MO150AH "$Y" "$D" "$AKA" $MO150 $Z
 dil SSOP28_MO150AH_narrowed_pads "$Y, with narrowed 0.38mm pads" "$D" $MO150_T $Z
-
-#       dilpad  JEDEC   MCT     description
-#       np      N       N       number of pads
-#       bw      E1      E1      body width
-#       bl      D       D       body length
-#       cw      E       E       component width (lead tip to lead tip)
-#       e       e       e, E*   lead pitch
-#       pl      n/a     Y*, Y1* pad length (pad outer-to-inner)
-#       plc     n/a     C*      pad length center-center (between centers of columns)
-#       pw      n/a     X*, X1* pad width (pad length perpendicular to pl)
-# * On recommended land pattern page of MCT packaging spec
 
 MS012_X="$GEN bw=3.90 cw=6.00 e=1.27 plc=5.40"
 MS012="$MS012_X pw=0.60"
